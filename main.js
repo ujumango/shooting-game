@@ -86,9 +86,9 @@ this.checkhit = function(){
     //총알.y <= 적군.y and
     //총알.x >= 적군.x and 총알.x <= 적군.x + 적군의 너비
     for(let i=0; i<enemyList.length; i++){
-        if(this.y <= enemyList[i].y && this.x >= enemyList[i].x && this.x <= enemyList[i].x + 55){
+        if(this.y <= enemyList[i].y && this.x >= enemyList[i].x && this.x <= enemyList[i].x + 40){
             //총알이 죽으면 적군의 우주선이 없어지고 점수획득
-            score++;
+            score ++;
             this.alive = false //죽은 총알!
             enemyList.splice(i, 1);
             //enemyList에서 i번째에 있는 값 1개를 우주선만 잘라내버리자
@@ -103,10 +103,10 @@ this.checkhit = function(){
 
 
 
-function generateRandomValue(min,max){
+function generateRandomValue(min, max){
     //이 함수를 call을 할 때 최대값, 최소값을 미리 보내주는 것
     //이 함수는랜덤한 숫자를 리턴만 하면 된다.
-    let randomNum = Math.floor(Math.random() * (max-min+1))+min //min값은 최소로 보장이 되게.
+    let randomNum = Math.floor(Math.random() * (max - min + 1)) + min //min값은 최소로 보장이 되게.
     //Math.random : 0~1까지를 반환하게 됨
     //최대값, 최소값 사이에서 랜덤값 받는 법
     //math.floor 소수점 내리기!
@@ -128,7 +128,7 @@ function Enemy(){
     }
 //적군이 내려와라
 this.update = function(){
-    this.y += 2 //적군의 속도 조절
+    this.y += 3 //적군의 속도 조절
 
     if(this.y >= canvas.height - 60){
         gameOver = true;
@@ -171,10 +171,11 @@ function createBullet(){
 
 //적군이 1초마다 생기기
 function createEnemy(){
-    const interval = setInterval(function(){
+    const interval = setInterval(function() {
         let e = new Enemy();
         e.init();
-    },1000)
+    },1000);
+
     //setInterval(호출하고싶은함수, 시간:얼마마다 호출?)은 내가 원하는 시간마다 함수호출 
 }
 
@@ -222,7 +223,7 @@ ctx.drawImage(spaceshipImage, spaceshipX, spaceshipY);
 
 ctx.fillText(`score : ${score}`,20,30);
 ctx.fillStyle = "white";
-ctx.font = "20px arial"
+ctx.font = "20px arial";
 
 //총알을 그려주자
 for(let i=0; i<bulletList.length; i++){
