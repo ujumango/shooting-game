@@ -22,7 +22,6 @@ document.body.appendChild(canvas);
 let backgroundImage,spaceshipImage,bulletImage,enemyImage,gameOverImage;
 let gameOver = false // true면 게임이 끝남, false이면 게임 진행
 let score = 0;
-let gameV = false //test
 // let pauseGame = false
 
 
@@ -55,9 +54,6 @@ function loadImage (){
 
     fireImage = new Image();
     fireImage.src = "imgs/fire.png"
-
-    pauseImage = new Image();
-    pauseImage.src = "imgs/pause.png"
 }
 
 let bulletList =[] //📌총알들을 저장하는 리스트(배열)
@@ -253,7 +249,7 @@ for(let i=0; i<enemyList.length; i++){
 
 function main() {
 
-    if(!gameV){ //!gameOver = false 상태를 말함, true면 그만 나와라
+    if(!gameOver){ //!gameOver = false 상태를 말함, true면 그만 나와라
     //render를 미친듯이 호출할 거임!
     update(); //좌표값을 업데이트하고(그래서 main 안에 넣음)
     render(); //그려주는 
@@ -261,35 +257,26 @@ function main() {
     //애니메이션처럼 프레임을 계속 호출해서 보여주는 함수
     //main을 작동시키면 끊임없이 메인을 부르게 됨!
 }else{
-    // ctx.drawImage(gameOverImage,20,130,350,380)
+    ctx.drawImage(gameOverImage,20,130,350,380)
 }
 }
 
 
-function pause() {
-    document.addEventListener('keydown', function(event){
+
+
+// function pause() {
+//     document.addEventListener('keydown', function(event){
+//         console.log('정리해라',keysDown)
         
-        if(event.keyCode == 27){
-          gameV = true;
-          ctx.drawImage(pauseImage,50,280,300,100)
-        }else if(event.keyCode == 13){
-            console.log('아니면',keysDown)
-            gameV = false;
-            main();
-        }
-    })
-}
+//         if(event.keyCode == 27){
+          
+//         }else if(gamePause == true){
 
-// function gameClose() {
-//     if(gameOver){
-//         gameV = true;
-//         ctx.drawImage(gameOverImage,20,130,350,380)
-//     }else{
-//         console.log('없어져라')
-//         gameV = false;
-       
-//     }
+//         }
+//     })
 // }
+
+
 
 
 
@@ -299,8 +286,6 @@ loadImage();
 setupKeyboardListner();
 createEnemy();
 main();
-pause();
-// gameClose();
 
 
 //렌더 함수를 계~속 불러와서 배경 이미지를 한 번이 아니라 계~속 불러오도록 함수를 추가해야 함.
