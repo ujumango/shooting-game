@@ -5,12 +5,10 @@ let ctx;
 // ctx : 이미지 그리는 걸 도와주는 변수
 
 canvas = document.createElement('canvas');
-//canvas라는 걸 만들어서 변수에 넣어준다. 
-//변수는 양동이 같이 어떤 값을 저장해주는 공간.
+
 
 ctx = canvas.getContext('2d');
-//ctx는 방금 만든 canvas에 conText('2d')라는 값으로 가져올 것이다.
-//이 ctx를 통해 2d 그림을 그려줄 것이다.
+
 
 canvas.width = 400;
 canvas.height = 700;
@@ -20,7 +18,6 @@ document.body.appendChild(canvas);
 
 //이미지 불러오는 함수
 let backgroundImage,spaceshipImage,bulletImage,enemyImage,gameOverImage;
-let gameOver = false // true면 게임이 끝남, false이면 게임 진행
 let score = 0;
 let gameV = false //test
 let gameStatus = 'A' //게임 실행
@@ -31,8 +28,6 @@ let gameStatus = 'A' //게임 실행
 
 //📌우주선 좌표
 let spaceshipX = canvas.width/2-35;
-//캔버스 중앙인 200px에서 비행기의 반 35px
-// 400-35 (필요한 이미지들 변수 설정)
 
 let spaceshipY = canvas.height-65;
 // 700 - 65 (높이-비행기높이)
@@ -58,6 +53,9 @@ function loadImage (){
 
     pauseImage = new Image();
     pauseImage.src = "imgs/pause.png"
+
+    startImg = new Image();
+    startImg.src = "imgs/gamestart.png"
 }
 
 let bulletList =[] //📌총알들을 저장하는 리스트(배열)
@@ -65,25 +63,22 @@ function Bullet () {
     //Bullet을 만들기 위한 재료들을 갖고 있는 함수
     this.x = 0;
     this.y = 0; //초기값
-    //이 x는 이 Bullet이라는 function에 속해있는 친구
-    //초기값은 의미가 없음. 총알이 우주선에서부터 출발하도록 총알의 값을 셋팅해줘야 함->init함수로 해줄거야.
-    this.init = ()=>{ //함수를 초기화 하는 함수,init은 초기화라는 뜻
+    this.init = ()=>{ 
         this.x = spaceshipX + 20; //우주선의 X값으로 초기화 , +20은 살짝 치우쳐서 그거 보정해주는 값
         this.y = spaceshipY; //우주선의 Y값으로 초기화 (처음)
 
-        bulletList.push(this) //this안에는 x,y,init도 있음. this라는 방금 만든 총알을 bulletList에 넣어줌
+        bulletList.push(this) 
 
         this.alive= true //살아있음 false면 죽음
-        //총알이 죽으면 어떻게 되는지..
+   
     };
 
 //총알이 쏘아지면 올라감
 this.update = ()=>{
     this.y -= 7;
 
-}//이걸 update함수 안에 넣어줘야 함 고고!
+}
 
-//총알을 발사할 때마다 체크를 헤줄거야
 
 this.checkhit = function(){
 
@@ -95,11 +90,9 @@ this.checkhit = function(){
             score ++;
             this.alive = false //죽은 총알!
             enemyList.splice(i, 1);
-            //enemyList에서 i번째에 있는 값 1개를 우주선만 잘라내버리자
-
-            //값을 업데이트하는 건 다 update()로 가자!
+      
     }
-    //적군이 여러개(리스트)라서 for문 써줘야함. enemyList 다 불러와!!
+   
 }
 } 
 }
@@ -108,13 +101,9 @@ this.checkhit = function(){
 
 
 function generateRandomValue(min, max){
-    //이 함수를 call을 할 때 최대값, 최소값을 미리 보내주는 것
-    //이 함수는랜덤한 숫자를 리턴만 하면 된다.
+
     let randomNum = Math.floor(Math.random() * (max - min + 1)) + min //min값은 최소로 보장이 되게.
-    //Math.random : 0~1까지를 반환하게 됨
-    //최대값, 최소값 사이에서 랜덤값 받는 법
-    //math.floor 소수점 내리기!
-    //❔여기가 조금 헷갈림...
+ 
 
     return randomNum;
 } 
@@ -150,7 +139,7 @@ this.update = function(){
 
 //방향키 누르면 이동하는 이벤트
 let keysDown = {}
-//우리가 클릭한 버튼을 객체 안에 저장
+
 //버튼이 클릭될 때마다 클릭된 버튼의 값이 keyDown에 저장
 function setupKeyboardListner() {
     document.addEventListener('keydown',(event)=>{
@@ -167,12 +156,10 @@ function setupKeyboardListner() {
 
 }
 
-//위에 안 하고 아래에 따로 function을 쓰는 이유 : 하나의 함수에는 하나의 역할을 가지고 있어야 함. (가독성, 코드이해 용이)
-//위에 setupkeyboardlistner()이 가지고 있는 역할과 다르니까 따로 빼줘서 함수(펑션)으로 만들어 줌
 function createBullet(){
     console.log('총알생성');
-    let b = new Bullet(); //new는 정의한 Bullet이라는 function을 다시 하나 찍어서 만들어줄 건데 그걸 b에 저장할 거야.
-    b.init() //총알을 생성하고 나서 init함수를 호출할거야 -> 그러면 init안에 있는 x값, y값 셋팅해주고 list에도 넣어줄거임. 이제 총알을 그려주자! render로 가자..
+    let b = new Bullet();
+    b.init() 
 }
 
 //적군이 1초마다 생기기
@@ -182,7 +169,7 @@ function createEnemy(){
         e.init();
     },1000);
 
-    //setInterval(호출하고싶은함수, 시간:얼마마다 호출?)은 내가 원하는 시간마다 함수호출 
+  
 }
 
 //우주선 X,y 값 업데이트해서 이동
@@ -194,8 +181,7 @@ function update() {
         spaceshipX -= 3
     }// left
 
- //우주선의 좌표값이 무한대로 없데이트 되지 않고 경기장 안에서만 움직일 수 있게 하려면?
-//x좌표 최소값 :0, 최대값: 130(캔버스의 너비-우주선 크기)
+
 if(spaceshipX <= 0){
     spaceshipX = 0
 }
@@ -207,8 +193,6 @@ if(spaceshipX >= canvas.width - 70){
 for(let i=0; i<bulletList.length; i++){
     bulletList[i].update();
     bulletList[i].checkhit();
-//bullstList안에 들어간 총알들은 계속 update함수를 호출해줄거임! 그래서 반복해서 -7 해줄 거임 
-//총알이 날아갈 때마다 매번 적군을 쳤는지 안 쳤는지 체크
 }
 
 for(let i=0; i<enemyList.length; i++){
@@ -222,7 +206,6 @@ for(let i=0; i<enemyList.length; i++){
 //이미지 보여주는 함수
 //render : 그리다, draw의 개념. ui를 그려주는 것
 function render() {
-//그림을 그려주는 ctx(canvas의 context를 품고 있음)가 최종적으로 그림을 그려주는 역할을 함. 그래서 ctx에서 draw를 해야 함!
 ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
 //canvas의 너비와 높이만큼
 ctx.drawImage(spaceshipImage, spaceshipX, spaceshipY);
@@ -236,7 +219,7 @@ for(let i=0; i<bulletList.length; i++){
     if(bulletList[i].alive){ //총알이 살아있으면 보여줘!
         ctx.drawImage(bulletImage, bulletList[i].x,bulletList[i].y); //bulletList의 i번째에 있는 애의 x값, y값
     }else{
-        // ctx.drawImage(fireImage, bulletList[i].x,bulletList[i].y)
+      
     }
    
 }
@@ -251,12 +234,14 @@ for(let i=0; i<enemyList.length; i++){
 
 function main() {
 
-    if(gameStatus == 'A'){ 
-    // gameV = false
-    update();
-    render();
-    requestAnimationFrame(main) 
-
+if(gameStatus == 'A'){ 
+//    ctx.drawImage(startImg,50,280,300,100);
+   gameV = false;
+   update();
+   render();
+   requestAnimationFrame(main); 
+   console.log('ㅇㅣ거 시작이야')
+   
 }else if(gameStatus == 'Q'){
     console.log('게임멈춰!!')
     ctx.drawImage(gameOverImage,20,130,350,380)
@@ -283,6 +268,9 @@ function pause() {
     })
 }
 
+function start() {
+    setInterval(main(), 1000)
+}
 
 
 
@@ -290,7 +278,7 @@ function pause() {
 loadImage();
 setupKeyboardListner();
 createEnemy();
-main();
+start() ;
 pause();
 
 
