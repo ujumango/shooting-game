@@ -23,7 +23,7 @@ let backgroundImage,spaceshipImage,bulletImage,enemyImage,gameOverImage;
 let gameOver = false // true면 게임이 끝남, false이면 게임 진행
 let score = 0;
 let gameV = false //test
-// let pauseGame = false
+let gameStatus = 'A' //게임 실행
 
 
 
@@ -136,7 +136,9 @@ this.update = function(){
 
     if(this.y >= canvas.height - 60){
         gameOver = true;
-        console.log('gameover')
+        gameStatus = 'Q';
+        // console.log('gameover')
+        console.log('game status  = Q')
     }
 }
 }
@@ -242,54 +244,44 @@ for(let i=0; i<bulletList.length; i++){
 //적군을 그려주자
 for(let i=0; i<enemyList.length; i++){
     ctx.drawImage(enemyImage, enemyList[i].x, enemyList[i].y)
-    
-  
 }
 }
-
-
 
 
 
 function main() {
 
-    if(!gameV){ //!gameOver = false 상태를 말함, true면 그만 나와라
-    //render를 미친듯이 호출할 거임!
-    update(); //좌표값을 업데이트하고(그래서 main 안에 넣음)
-    render(); //그려주는 
-    requestAnimationFrame(main) //위 두개를 계속 반복해주는 것
-    //애니메이션처럼 프레임을 계속 호출해서 보여주는 함수
-    //main을 작동시키면 끊임없이 메인을 부르게 됨!
-}else{
-    // ctx.drawImage(gameOverImage,20,130,350,380)
-}
-}
+    if(gameStatus == 'A'){ 
+    // gameV = false
+    update();
+    render();
+    requestAnimationFrame(main) 
 
+}else if(gameStatus == 'Q'){
+    console.log('게임멈춰!!')
+    ctx.drawImage(gameOverImage,20,130,350,380)
+    
+}else if(gameStatus == 'P'){
+    gameV = true;
+    console.log('P가 되면용')
+    ctx.drawImage(pauseImage,50,280,300,100)
+}
+}
 
 function pause() {
     document.addEventListener('keydown', function(event){
         
         if(event.keyCode == 27){
-          gameV = true;
-          ctx.drawImage(pauseImage,50,280,300,100)
+            gameStatus = 'P'
+            console.log('ESC클릭')
+        //   ctx.drawImage(pauseImage,50,280,300,100)
         }else if(event.keyCode == 13){
-            console.log('아니면',keysDown)
-            gameV = false;
+            console.log('ENTER클릭')
+            gameStatus = 'A'
             main();
         }
     })
 }
-
-// function gameClose() {
-//     if(gameOver){
-//         gameV = true;
-//         ctx.drawImage(gameOverImage,20,130,350,380)
-//     }else{
-//         console.log('없어져라')
-//         gameV = false;
-       
-//     }
-// }
 
 
 
@@ -300,27 +292,9 @@ setupKeyboardListner();
 createEnemy();
 main();
 pause();
-// gameClose();
 
 
 //렌더 함수를 계~속 불러와서 배경 이미지를 한 번이 아니라 계~속 불러오도록 함수를 추가해야 함.
 
 
 
-
-//📌총알만들기
-//1. 스페이스 바를 누르면 총알을 발사한다.
-//2. 총알이 발사 : Y값이 줄어든다. X값은 ? 총알을 누르는 순간의 X값
-//3. 발사된 총알들은 총알 배열에 저장을 한다.
-//4. 모든 총알들은 x,y 좌쵸 값이 있어야 한다.
-//5. 총알 배열들을 가지고 render로 그려준다.
-// ->위에 keyboardlistner로 이동해서 만들자!
-
-
-//📌적군의 특징
-//1. 귀엽다  x, y, init, update 
-//2. 적군의 위치가 랜덤하다.
-//3. 적군은 밑으로 내려온다.
-//4. 적군은 1초마다 하나씩 생긴다.
-//5. 적군이 바닥에 닿으면 게임 오버
-//6. 적군과 총알이 만나면 우주선이 사라진다. 점수 1점 획득

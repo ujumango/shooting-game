@@ -132,7 +132,7 @@ this.update = function(){
 
     if(this.y >= canvas.height - 60){
         gameOver = true;
-        console.log('gameover')
+        console.log('gameover', gameOver)
     }
 }
 }
