@@ -31,6 +31,7 @@ let spaceshipX = canvas.width/2-35;
 
 let spaceshipY = canvas.height-65;
 // 700 - 65 (높이-비행기높이)
+
 function loadImage (){
     backgroundImage = new Image();
     backgroundImage.src="imgs/background.png"
@@ -144,6 +145,7 @@ let keysDown = {}
 function setupKeyboardListner() {
     document.addEventListener('keydown',(event)=>{
         keysDown[event.keyCode] = true
+        console.log('지금 누른 버튼은', keysDown)
         //누른 상태에는 버튼 값 저장, 키가 떼지면 버튼 값이 사라져야 함.
     });
     document.addEventListener('keyup', (event)=>{
